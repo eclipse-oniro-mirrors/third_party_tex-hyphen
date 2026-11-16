@@ -21,6 +21,18 @@ ohos_executable("hpb_transform") {
   sources =
       [ "$hyphen_root/ohos/src/hyphen-build/hyphen_pattern_processor.cpp" ]
   external_deps = [ "icu:shared_icuuc" ]
+
+  # Security hardening: hardware backward PAC + software CFI
+  if (current_os == "ohos") {
+    branch_protector_ret = "pac_ret"
+    sanitize = {
+      cfi = true
+      cfi_cross_dso = true
+      cfi_vcall_icall_only = true
+      debug = false
+    }
+  }
+
   part_name = "tex-hyphen"
   subsystem_name = "thirdparty"
 }
